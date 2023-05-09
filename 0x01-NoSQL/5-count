@@ -1,0 +1,2 @@
+// dispay the number of documents int he collection `school`
+db.school.count()
