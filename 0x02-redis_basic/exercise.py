@@ -69,6 +69,7 @@ class Cache:
 
 
 def replay(func):
+    """Displays history of function call"""
     redis = Redis()
     fn_name = func.__qualname__
     c = redis.get(fn_name)
