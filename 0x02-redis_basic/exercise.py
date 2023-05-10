@@ -68,7 +68,7 @@ class Cache:
         return fn(self._redis.get(key))
 
 
-def replay(func):
+def replay(func: Callable) -> None:
     """Displays history of function call"""
     redis = Redis()
     fn_name = func.__qualname__
