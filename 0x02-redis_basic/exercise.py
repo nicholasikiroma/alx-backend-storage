@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module contains exercises on Redis"""
-from redis import Redis
+import redis
 from uuid import uuid4
 from typing import Callable, Union, Any
 from functools import wraps
@@ -40,7 +40,7 @@ class Cache:
 
     def __init__(self):
         """class constructor"""
-        self._redis = Redis()
+        self._redis = redis.Redis()
         self._redis.flushdb(True)
 
     @call_history
@@ -70,7 +70,7 @@ class Cache:
 
 def replay(func: Callable):
     """Displays history of function call"""
-    redis = Redis()
+    r = redis.Redis()
     fn_name = func.__qualname__
     c = redis.get(fn_name)
     try:
@@ -78,8 +78,8 @@ def replay(func: Callable):
     except Exception:
         c = 0
     print("{} was called {} times:".format(fn_name, c))
-    inputs = redis.lrange("{}:inputs".format(fn_name), 0, -1)
-    outputs = redis.lrange("{}:outputs".format(fn_name), 0, -1)
+    inputs = r.lrange("{}:inputs".format(fn_name), 0, -1)
+    outputs = r.lrange("{}:outputs".format(fn_name), 0, -1)
     for input, output in zip(inputs, outputs):
         try:
             input = input.decode("utf-8")
